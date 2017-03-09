@@ -1,6 +1,6 @@
 {% set name = "metawrap" %}
-{% set version = "0.0.1" %}
-{% set sha256 = "f56b749b596c3acd5b906231d778136ebe6da526d2d65151e22956bab7dc7605" %}
+{% set version = "0.0.2" %}
+{% set sha256 = "1552bb2495f81b05b868b2607f4790772fd02e6a173e78b2da86a48bd38be40e" %}
 
 package:
   name: {{ name|lower }}
@@ -24,8 +24,14 @@ requirements:
     - python
 
 test:
+  source_files:
+    - tests
+
   imports:
     - metawrap
+
+  commands:
+    - python -m unittest discover -s .
 
 about:
   home: http://github.com/jakirkham/metawrap
