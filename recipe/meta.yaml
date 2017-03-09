@@ -24,8 +24,14 @@ requirements:
     - python
 
 test:
+  source_files:
+    - tests
+
   imports:
     - metawrap
+
+  commands:
+    - python -m unittest discover -s .
 
 about:
   home: http://github.com/jakirkham/metawrap
