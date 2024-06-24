@@ -1,48 +1,40 @@
 {% set name = "metawrap" %}
-{% set version = "0.0.2" %}
-{% set sha256 = "1552bb2495f81b05b868b2607f4790772fd02e6a173e78b2da86a48bd38be40e" %}
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: {{ name }}-split
 
-source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
-
-build:
-  noarch: python
-  number: 1
-  script: python -m pip install --no-deps --ignore-installed .
-
-requirements:
-  host:
-    - pip
-    - python
-    - setuptools
-
-  run:
-    - python
-
-test:
-  source_files:
-    - tests
-
-  imports:
-    - metawrap
-
-  commands:
-    - python -m unittest discover -s .
-
-about:
-  home: http://github.com/jakirkham/metawrap
-  license: BSD 3-Clause
-  license_family: BSD
-  license_file: LICENSE.txt
-  summary: A collection of wrappers for functions and classes.
-  doc_url: https://metawrap.readthedocs.io/
-  dev_url: http://github.com/jakirkham/metawrap
+outputs:
+  - name: {{ name|lower }}
+    version: "{{ environ.get('GIT_DESCRIBE_TAG', '')[1:] }}{{ '+' + environ.get('GIT_DESCRIBE_NUMBER', '0') + '.' + environ.get('GIT_DESCRIBE_HASH', '0') if environ.get('GIT_DESCRIBE_NUMBER', '0') != '0' else '' }}"
+    source:
+      git_url: https://github.com/jakirkham/metawrap
+      git_rev: HEAD
+    build:
+      noarch: python
+      number: 1
+      script: python -m pip install --no-deps --ignore-installed .
+    requirements:
+      host:
+        - pip
+        - python
+        - setuptools
+      run:
+        - python
+      test:
+        source_files:
+          - tests
+        imports:
+          - metawrap
+        commands:
+          - python -m unittest discover -s .
+        about:
+          home: http://github.com/jakirkham/metawrap
+          license: BSD 3-Clause
+          license_family: BSD
+          license_file: LICENSE.txt
+          summary: A collection of wrappers for functions and classes.
+          doc_url: https://metawrap.readthedocs.io/
+          dev_url: http://github.com/jakirkham/metawrap
 
 extra:
   recipe-maintainers:
